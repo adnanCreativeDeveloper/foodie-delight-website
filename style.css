@@ -464,6 +464,7 @@ ul {
   display: flex;
   align-items: center;
   border-radius: 30px;
+  padding: 20px;
   background: linear-gradient(145deg, #ececec, #ffffff);
   box-shadow: 28px 28px 45px #d4d4d4, -28px -28px 45px #ffffff;
   display: flow-root;
@@ -507,10 +508,6 @@ ul {
   font-size: 19px;
 }
 
-.cart-btn a:hover {
-  background: #ff8243;
-}
-
 .cart-btn a:hover i {
   color: #ffffff !important;
 }
@@ -533,6 +530,10 @@ ul {
 
 .increment-btn:hover {
   background: linear-gradient(145deg, #e3a92b, #ffc933);
+}
+
+.check-out-modal {
+  padding: 20px 30px;
 }
 
 .check-out-modal .order-summary,
@@ -660,6 +661,17 @@ ul {
   .cart-item-content {
     width: 100%;
     margin: 0 auto;
+  }
+
+  .check-out-modal {
+    padding: 0px 0px;
+  }
+
+  .check-out-modal .order-summary,
+  .delivery-details,
+  .payment {
+    padding: 15px;
+    margin: 0 10px;
   }
 
   .cart-item-content ul li {

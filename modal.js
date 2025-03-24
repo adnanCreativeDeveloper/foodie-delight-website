@@ -43,7 +43,7 @@ function initializeModal() {
 
     cartItems.forEach((item, index) => {
       const productCard = `
-        <div class="product-card d-flex align-items-start gap-2 p-3 mb-5" data-index="${index}">
+        <div class="product-card d-flex align-items-start gap-2 mb-5" data-index="${index}">
           <div class="d-flex align-items-center cart-item-image">
             <img src="${item.image}" alt="Product" class="product-img me-2">
           </div>
