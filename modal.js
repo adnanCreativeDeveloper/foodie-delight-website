@@ -1,0 +1,192 @@
+function initializeModal() {
+  // Array to store cart items
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+  // Function to get card details
+  function getCardDetails(card) {
+    const title = card.find('.h3-title').text();
+    const type = card.find('.dish-info li:first-child b').text();
+    const persons = card.find('.dish-info li:last-child b').text();
+    const price = card.find('.dist-bottom-row ul li:first-child b').text();
+    const image = card.find('.dist-img img').attr('src');
+    const rating = card.find('.dish-rating').text().trim();
+    const stock = parseInt(card.find('.dish-info li:last-child b').text(), 10); // Assuming stock is stored in a data attribute
+    return { title, type, persons, price, image, rating, stock };
+  }
+
+  // Function to map cart items to modal
+  function mapCartItemsToModal() {
+    const modalBody = $('#cartModalCenter .modal-body');
+    modalBody.empty(); // Ensure the modal body is cleared before mapping items
+
+    if (cartItems.length === 0) {
+      const emptyCartContent = `
+        <div class="empty-cart-content w-50 mx-auto d-flex align-items-center justify-content-center"
+            style="min-height: 380px;" data-dismiss="modal"
+            data-target="#checkoutModalCenter">
+            <div class="text-center">
+              <p class="" style="font-size: 50px;"><i class="uil uil-shopping-bag"></i></p>
+              <p><b>Your cart is empty</b></p>
+              <p>Add products while you shop, so they'll be ready for checkout later.</p>
+              <div class="">
+                <button class="sec-btn">Continue Shopping</button>
+              </div>
+            </div>
+          </div>
+      `;
+      modalBody.append(emptyCartContent);
+      $('.sec-btn[data-target="#checkoutModalCenter"]').prop('disabled', true);
+    } else {
+      $('.sec-btn[data-target="#checkoutModalCenter"]').prop('disabled', false);
+    }
+
+    cartItems.forEach((item, index) => {
+      const productCard = `
+        <div class="product-card d-flex align-items-start gap-2 p-3 mb-5" data-index="${index}">
+          <div class="d-flex align-items-center cart-item-image">
+            <img src="${item.image}" alt="Product" class="product-img me-2">
+          </div>
+          <div class="pt-3 flex-grow-1 d-flex flex-column justify-content-between h-full cart-item-content">
+            <div>
+              <h6 class="mb-3 h5">${item.title}</h6>
+              <div class="d-flex align-items-center gap-5">
+                <span class="h3 mb-0 text-primary fw-bold">${item.price}</span>
+                <div class="dish-rating mb-0">
+                  ${item.rating}
+                  <i class="uil uil-star"></i>
+                </div>
+              </div>
+              <div>
+                <ul>
+                  <li class="d-flex gap-2 mb-0">
+                    <p class="mb-0">Type:</p>
+                    <p class="mb-0 fw-bold">${item.type}</p>
+                  </li>
+                  <li class="d-flex gap-2">
+                    <p class="mb-0">Persons:</p>
+                    <p class="mb-0 fw-bold">${item.persons}</p>
+                  </li>
+                  <li class="d-flex gap-2">
+                    <p class="mb-0">Stock:</p>
+                    <p class="mb-0 fw-bold">${item.stock}</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mt-3 self-content-end flex-grow-1">
+              <div class="cart-btn d-flex gap-2">
+                <a href="#" class="wishlist-btn"><i class="uil uil-heart"></i></a>
+                <a href="javascript:void(0)" class="delete-btn"><i class="uil uil-trash-alt"></i></a>
+              </div>
+              <ul>
+                <li class='btn btn-group'>
+                  <button class="increment-btn decrement">
+                    <i class="uil uil-minus"></i>
+                  </button>
+                  <input type="number" class="quantity-input mx-2 text-center" value="1" min="1" style="border: none; outline: none; width: 40px;">
+                  <button class="increment-btn increment">
+                    <i class="uil uil-plus"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+      modalBody.append(productCard);
+    });
+
+    // Add event listener for delete buttons using event delegation
+    modalBody.off('click', '.delete-btn').on('click', '.delete-btn', function () {
+      const index = $(this).closest('.product-card').data('index');
+      const item = cartItems[index];
+      cartItems.splice(index, 1);
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      mapCartItemsToModal();
+      updateCartNumber();
+      updateStockInCards(item.title, 1);
+    });
+
+    // Add event listener for quantity input changes
+    modalBody.off('input', '.quantity-input').on('input', '.quantity-input', function () {
+      const index = $(this).closest('.product-card').data('index');
+      const newQuantity = parseInt($(this).val(), 10);
+      if (newQuantity > cartItems[index].stock) {
+        alert('Out of stock');
+        $(this).val(cartItems[index].stock);
+      } else {
+        updateStockInCards();
+      }
+    });
+
+    // Add event listener for increment buttons
+    modalBody.off('click', '.increment').on('click', '.increment', function () {
+      const input = $(this).siblings('.quantity-input');
+      const index = $(this).closest('.product-card').data('index');
+      let currentQuantity = parseInt(input.val(), 10);
+      if (currentQuantity < cartItems[index].stock) {
+        input.val(currentQuantity + 1);
+        updateStockInCards(cartItems[index].title, -1); // Decrease stock by 1
+      } else {
+        alert('Out of stock');
+      }
+    });
+
+    // Add event listener for decrement buttons
+    modalBody.off('click', '.decrement').on('click', '.decrement', function () {
+      const input = $(this).siblings('.quantity-input');
+      const index = $(this).closest('.product-card').data('index');
+      let currentQuantity = parseInt(input.val(), 10);
+      if (currentQuantity > 1) {
+        input.val(currentQuantity - 1);
+        updateStockInCards(cartItems[index].title, 1);
+      }
+    });
+  }
+
+  // Function to update cart number
+  function updateCartNumber() {
+    const cartNumber = $('.header-cart .cart-number');
+    cartNumber.text(cartItems.length);
+    if (cartItems.length === 0) {
+      cartNumber.hide();
+    } else {
+      cartNumber.show();
+    }
+  }
+
+  // Function to update stock in cards
+  function updateStockInCards(title, change) {
+    const card = $(`.dish-box:contains(${title})`);
+    const stockElement = card.find('.dish-info li:last-child b');
+    const currentStock = parseInt(stockElement.text(), 10);
+    stockElement.text(currentStock + change);
+  }
+
+  // Event listener for dish-add-btn
+  $('.dish-add-btn').on('click', function () {
+    const card = $(this).closest('.dish-box');
+    const stockElement = card.find('.dish-info li:last-child b');
+    const stock = parseInt(stockElement.text(), 10);
+    if (stock < 1) {
+      alert('Out of stock');
+      return;
+    }
+    const details = getCardDetails(card);
+    const existingItemIndex = cartItems.findIndex(item => item.title === details.title);
+    if (existingItemIndex !== -1) {
+      alert('Item already in cart');
+      return;
+    }
+    cartItems.push(details);
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    mapCartItemsToModal();
+    updateCartNumber();
+    updateStockInCards(details.title, -1); // Decrease stock by 1
+    // $('#cartModalCenter').modal('show');
+  });
+
+  // Initial setup
+  mapCartItemsToModal();
+  updateCartNumber();
+}
