@@ -602,8 +602,7 @@ ul {
   margin-top: 2px;
 }
 
-.payment-btn,
-.checkout-btns button {
+.payment-btn {
   background: linear-gradient(145deg, #ececec, #ffffff);
   box-shadow: 28px 28px 45px #d4d4d4, -28px -28px 45px #ffffff;
   padding: 10px 20px;
@@ -613,8 +612,12 @@ ul {
   transition: 0.8s cubic-bezier(0.22, 0.78, 0.45, 1.02);
 }
 
+.footer-btns {
+  transition: 0.8s cubic-bezier(0.22, 0.78, 0.45, 1.02);
+}
+
 .payment-btn:hover,
-.checkout-btns button:hover {
+.footer-btns .sec-btn:hover {
   scale: 1.1;
 }
 
@@ -622,11 +625,11 @@ ul {
   border-top: 2px solid rgb(204 204 204 / 30%);
 }
 
-.checkout-btns button {
+.footer-btns button {
   width: 100%;
 }
 
-.checkout-btns {
+.footer-btns {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -676,7 +679,7 @@ ul {
 
   .check-out-modal .cart-checkout-form .group-field,
   .payment .payment-card,
-  .checkout-btns {
+  .footer-btns {
     flex-direction: column;
   }
 
