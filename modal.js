@@ -20,10 +20,20 @@ function initializeModal() {
     modalBody.empty(); // Ensure the modal body is cleared before mapping items
 
     if (cartItems.length === 0) {
-      Update empty cart modal width and layout
-
-      - Changed empty cart container width to 50%
-      - Adjusted container styling for better centering
+      const emptyCartContent = `
+        <div class="empty-cart-content mx-auto d-flex align-items-center justify-content-center"
+            style="min-height: 380px;" data-dismiss="modal"
+            data-target="#checkoutModalCenter">
+            <div class="text-center">
+              <p class="" style="font-size: 50px;"><i class="uil uil-shopping-bag"></i></p>
+              <p><b>Your cart is empty</b></p>
+              <p>Add products while you shop, so they'll be ready for checkout later.</p>
+              <div class="">
+                <button class="sec-btn">Continue Shopping</button>
+              </div>
+            </div>
+          </div>
+      `;
       modalBody.append(emptyCartContent);
       $('.sec-btn[data-target="#checkoutModalCenter"]').prop('disabled', true);
     } else {
