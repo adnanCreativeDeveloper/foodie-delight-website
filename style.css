@@ -471,11 +471,6 @@ ul {
   /* padding: 0 30px 40px; */
   padding-top: 0;
   margin: 0 30px;
-  transition: 0.8s cubic-bezier(0.22, 0.78, 0.45, 1.02);
-}
-
-.product-card:hover {
-  transform: scale(1.03);
 }
 
 .cart-item-image {
