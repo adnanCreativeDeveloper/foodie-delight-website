@@ -10,8 +10,9 @@ function initializeModal() {
     const price = card.find('.dist-bottom-row ul li:first-child b').text();
     const image = card.find('.dist-img img').attr('src');
     const rating = card.find('.dish-rating').text().trim();
-    const stock = parseInt(card.find('.dish-info li:last-child b').text(), 10); // Assuming stock is stored in a data attribute
-    return { title, type, persons, price, image, rating, stock };
+    const stock = parseInt(card.find('.dish-info li:last-child b').text(), 10);
+    const quantity = 1; // Default quantity is 1 when added to cart
+    return { title, type, persons, price, image, rating, stock, quantity };
   }
 
   // Function to map cart items to modal
@@ -67,6 +68,10 @@ function initializeModal() {
                     <p class="mb-0 fw-bold">${item.persons}</p>
                   </li>
                   <li class="d-flex gap-2">
+                    <p class="mb-0">Quantity:</p>
+                    <p class="mb-0 fw-bold">${item.quantity}</p>
+                  </li>
+                  <li class="d-flex gap-2">
                     <p class="mb-0">Stock:</p>
                     <p class="mb-0 fw-bold">${item.stock}</p>
                   </li>
@@ -83,7 +88,7 @@ function initializeModal() {
                   <button class="increment-btn decrement">
                     <i class="uil uil-minus"></i>
                   </button>
-                  <input type="number" class="quantity-input mx-2 text-center" value="1" min="1" style="border: none; outline: none; width: 40px;">
+                  <input type="number" class="quantity-input mx-2 text-center" value="${item.quantity}" min="1" style="border: none; outline: none; width: 40px;">
                   <button class="increment-btn increment">
                     <i class="uil uil-plus"></i>
                   </button>
@@ -104,18 +109,21 @@ function initializeModal() {
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       mapCartItemsToModal();
       updateCartNumber();
-      updateStockInCards(item.title, 1);
+      updateStockInCards(item.title, item.quantity); // Increase stock by the quantity of the deleted item
     });
 
     // Add event listener for quantity input changes
     modalBody.off('input', '.quantity-input').on('input', '.quantity-input', function () {
       const index = $(this).closest('.product-card').data('index');
       const newQuantity = parseInt($(this).val(), 10);
-      if (newQuantity > cartItems[index].stock) {
-        alert('Out of stock');
-        $(this).val(cartItems[index].stock);
+      if (isNaN(newQuantity) || newQuantity < 1 || newQuantity > cartItems[index].stock) {
+        $(this).val(cartItems[index].quantity);
       } else {
-        updateStockInCards();
+        const difference = newQuantity - cartItems[index].quantity;
+        cartItems[index].quantity = newQuantity;
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        updateStockInCards(cartItems[index].title, -difference);
+        mapCartItemsToModal();
       }
     });
 
@@ -124,11 +132,12 @@ function initializeModal() {
       const input = $(this).siblings('.quantity-input');
       const index = $(this).closest('.product-card').data('index');
       let currentQuantity = parseInt(input.val(), 10);
-      if (currentQuantity < cartItems[index].stock) {
+      if (!isNaN(currentQuantity) && currentQuantity < cartItems[index].stock) {
         input.val(currentQuantity + 1);
-        updateStockInCards(cartItems[index].title, -1); // Decrease stock by 1
-      } else {
-        alert('Out of stock');
+        cartItems[index].quantity = currentQuantity + 1;
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        updateStockInCards(cartItems[index].title, -1);
+        mapCartItemsToModal();
       }
     });
 
@@ -137,9 +146,12 @@ function initializeModal() {
       const input = $(this).siblings('.quantity-input');
       const index = $(this).closest('.product-card').data('index');
       let currentQuantity = parseInt(input.val(), 10);
-      if (currentQuantity > 1) {
+      if (!isNaN(currentQuantity) && currentQuantity > 1) {
         input.val(currentQuantity - 1);
+        cartItems[index].quantity = currentQuantity - 1;
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
         updateStockInCards(cartItems[index].title, 1);
+        mapCartItemsToModal();
       }
     });
   }
@@ -183,7 +195,6 @@ function initializeModal() {
     mapCartItemsToModal();
     updateCartNumber();
     updateStockInCards(details.title, -1); // Decrease stock by 1
-    // $('#cartModalCenter').modal('show');
   });
 
   // Initial setup
