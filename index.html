@@ -71,18 +71,6 @@ includes images, text content, social media links, and interactive elements like
       </div>
   </header>
   <!-- header ends  -->
-  <!-- <div class="empty-cart-content w-50 mx-auto d-flex align-items-center justify-content-center"
-    style="min-height: 380px;" data-dismiss="modal" data-target="#checkoutModalCenter">
-    <div class="text-center">
-      <p class="" style="font-size: 50px;"><i class="uil uil-shopping-bag"></i></p>
-      <p><b>Your cart is empty</b></p>
-      <p>Add products while you shop, so they'll be ready for checkout later.</p>
-      <div class="">
-        <button class="sec-btn">Continue Shopping</button>
-      </div>
-    </div>
-  </div> -->
-  <!-- Modal -->
   <div class="modal fade" id="cartModalCenter" tabindex="-1" role="dialog" aria-labelledby="cartModalCenterTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
@@ -145,37 +133,37 @@ includes images, text content, social media links, and interactive elements like
             <h3 class="py-2">Delivery Details</h3>
             <div class="delivery-details">
               <form action="#" class="cart-checkout-form for-des" novalidate>
-                <div class="group-field row">
-                  <div class="col-12 col-md-6">
+                <div class="group-field">
+                  <div>
                     <label for="your-name">Your Name</label>
                     <input type="text" id="your-name" class="form-control" placeholder="Bonnie Green" required>
                   </div>
-                  <div class="col-12 col-md-6">
+                  <div>
                     <label for="your-email">Your email</label>
                     <input type="email" id="your-email" class="form-control" placeholder="name@flowbite.com" required>
                   </div>
                 </div>
-                <div class="group-field row">
-                  <div class="col-12 col-md-6">
+                <div class="group-field">
+                  <div>
                     <label for="country">Country</label>
                     <input type="text" id="country" class="form-control" placeholder="Bonnie Green" required>
                   </div>
-                  <div class="col-12 col-md-6">
+                  <div>
                     <label for="city">City</label>
                     <input type="text" id="city" class="form-control" placeholder="San Francisco" required>
                   </div>
                 </div>
-                <div class="group-field row">
-                  <div class="col-12 col-md-6">
+                <div class="group-field">
+                  <div>
                     <label for="phone-number">Phone Number</label>
                     <input type="number" id="phone-number" class="form-control" placeholder="123-456-7890" required>
                   </div>
-                  <div class="col-12 col-md-6">
+                  <div>
                     <label for="company-name">Company name</label>
                     <input type="text" id="company-name" class="form-control" placeholder="Flowbite LLC">
                   </div>
                 </div>
-                <div class="group-field row">
+                <div class="group-field">
                   <div>
                     <label for="VAT-number">VAT number</label>
                     <input type="text" id="VAT-number" class="form-control" placeholder="DE42313253">
@@ -186,8 +174,8 @@ includes images, text content, social media links, and interactive elements like
             <div>
               <h3 class="py-2">Payment</h3>
               <div class="payment">
-                <div class="payment-card row">
-                  <div class="card w-100 w-md-50 col-sm-12 col-md-6">
+                <div class="payment-card">
+                  <div class="card">
                     <div class="d-flex align-items-start justify-content-start gap-2 mb-2">
                       <input type="radio" id="payment-card" name="payment-radio-card" checked>
                       <label for="payment-card">
@@ -199,7 +187,7 @@ includes images, text content, social media links, and interactive elements like
                       <button class="payment-btn">Delete</button>
                     </div>
                   </div>
-                  <div class="card w-100 w-md-50 col-sm-12 col-md-6">
+                  <div class="card">
                     <div class="d-flex align-items-start justify-content-start gap-2 mb-2">
                       <input type="radio" id="payment-card1" name="payment-radio-card">
                       <label for="payment-card1">
@@ -217,8 +205,8 @@ includes images, text content, social media links, and interactive elements like
             <div>
               <h3 class="py-2">Delivery Methods</h3>
               <div class="payment">
-                <div class="payment-card row">
-                  <div class="card w-100 w-md-50 col-sm-12 col-md-6">
+                <div class="payment-card">
+                  <div class="card">
                     <div class="d-flex align-items-start justify-content-start gap-2">
                       <input type="radio" id="delivery-card" name="delivery-radio-card" checked>
                       <label for="delivery-card">
@@ -227,7 +215,7 @@ includes images, text content, social media links, and interactive elements like
                       </label>
                     </div>
                   </div>
-                  <div class="card w-100 w-md-50 col-sm-12 col-md-6">
+                  <div class="card">
                     <div class="d-flex align-items-start justify-content-start gap-2">
                       <input type="radio" id="delivery-card1" name="delivery-radio-card">
                       <label for="delivery-card1">
@@ -240,9 +228,9 @@ includes images, text content, social media links, and interactive elements like
               </div>
             </div>
             <div class="hr-line my-5"></div>
-            <div class="checkout-btns row">
-              <button class="col-sm-12 col-md-6">Proceed to Checkout</button>
-              <button class="col-sm-12 col-md-6">Continue Shopping</button>
+            <div class="checkout-btns overflow-x-hidden">
+              <button>Proceed to Checkout</button>
+              <button>Continue Shopping</button>
             </div>
           </div>
         </div>
