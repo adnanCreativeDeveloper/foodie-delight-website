@@ -110,6 +110,7 @@ function initializeModal() {
       mapCartItemsToModal();
       updateCartNumber();
       updateStockInCards(item.title, item.quantity); // Increase stock by the quantity of the deleted item
+      showNotification('info', `${item.title} removed from cart`);
     });
 
     // Add event listener for quantity input changes
@@ -175,27 +176,66 @@ function initializeModal() {
     stockElement.text(currentStock + change);
   }
 
+  function showNotification(type, message) {
+    const icons = {
+      success: 'uil uil-check',
+      warning: 'uil uil-exclamation',
+      error: 'uil uil-times',
+      info: 'uil uil-info'
+    };
+
+    const notification = $(`
+      <div class="notify-content notify-${type}">
+      <div>
+        <div class="notification-icon">
+            <i class="${icons[type]}"></i>
+        </div>
+      </div>
+      <div>
+        <p>${message}</p>
+      </div>
+    </div>
+    `);
+
+    $('.notifications').append(notification);
+
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+      notification.fadeOut(300, function () {
+        $(this).remove();
+      });
+    }, 3000);
+  }
+
+
   // Event listener for dish-add-btn
   $('.dish-add-btn').on('click', function () {
     const card = $(this).closest('.dish-box');
     const stockElement = card.find('.dish-info li:last-child b');
     const stock = parseInt(stockElement.text(), 10);
+
     if (stock < 1) {
-      alert('Out of stock');
+      showNotification('error', 'Out of stock');
       return;
     }
+
     const details = getCardDetails(card);
     const existingItemIndex = cartItems.findIndex(item => item.title === details.title);
+
     if (existingItemIndex !== -1) {
-      alert('Item already in cart');
+      showNotification('warning', 'Item is already in the cart');
       return;
     }
+
     cartItems.push(details);
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
     mapCartItemsToModal();
     updateCartNumber();
     updateStockInCards(details.title, -1); // Decrease stock by 1
+
+    showNotification('success', `${details.title} added to cart`);
   });
+
 
   // Initial setup
   mapCartItemsToModal();
