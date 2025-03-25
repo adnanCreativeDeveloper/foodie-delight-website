@@ -477,18 +477,19 @@ ul {
 }
 
 .notify-content .notification-icon {
-  background: rgba(51, 71, 10, 0.882);
+  background: rgb(255, 255, 255);
   display: flex;
   align-items: center;
   justify-content: center;
   height: 35px;
   width: 35px;
   border-radius: 100%;
-  font-size: 20px;
+  box-shadow: 9px #ffffff;
 }
 
-.notify i {
-  font-size: 18px;
+.notify-content .notification-icon i {
+  font-size: 30px !important;
+  font-weight: bolder;
 }
 
 .notify-info {
@@ -512,7 +513,7 @@ ul {
   margin-bottom: 0;
   margin-top: 0;
   color: white;
-  line-height: normal;
+  line-height: 1;
 }
 
 @keyframes fadeIn {
