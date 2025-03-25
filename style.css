@@ -458,6 +458,77 @@ ul {
 }
 
 /* ************************** 
+        notifications
+ ************************** */
+.notify-content {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 15px;
+  gap: 15px;
+  width: 300px;
+  border-radius: 5px;
+  background: rgba(204, 125, 80, 0.956);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.notify-content .notification-icon {
+  background: rgba(51, 71, 10, 0.882);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  width: 35px;
+  border-radius: 100%;
+  font-size: 20px;
+}
+
+.notify i {
+  font-size: 18px;
+}
+
+.notify-info {
+  background: #B7AEEB;
+}
+
+.notify-success {
+  background: #8EDE99;
+}
+
+.notify-warning {
+  background: #F0D55B;
+}
+
+.notify-error {
+  background: #E24444;
+}
+
+.notify-content h6,
+.notify-content p {
+  margin-bottom: 0;
+  margin-top: 0;
+  color: white;
+  line-height: normal;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ************************** 
             modals
  ************************** */
 .product-card {
@@ -503,9 +574,9 @@ ul {
   font-size: 19px;
 }
 
-.cart-btn a:hover i {
+/* .cart-btn a:hover i {
   color: #ffffff !important;
-}
+} */
 
 .increment-btn {
   width: 40px;
