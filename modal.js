@@ -236,6 +236,14 @@ function initializeModal() {
     showNotification('success', `${details.title} added to cart`);
   });
 
+  // Event listener for "Proceed to Checkout" button in the checkout modal
+  $('#checkoutModalCenter .footer-btns .sec-btn:last-child').on('click', function () {
+    showNotification('success', 'Your order has been placed successfully!');
+    cartItems = []; // Clear the cart items
+    localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Update localStorage
+    mapCartItemsToModal(); // Refresh the cart modal
+    updateCartNumber(); // Update the cart number in the header
+  });
 
   // Initial setup
   mapCartItemsToModal();
